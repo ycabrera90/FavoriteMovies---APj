@@ -3,21 +3,19 @@
 const addMovieModal = document.getElementById('add-modal');
 const delMovieModal = document.getElementById('delete-modal');
 const cancelDelMovieModal = delMovieModal.querySelector('.btn--passive');
-const confirmDelMovieModal = delMovieModal.querySelector('.btn--danger');
 
 const AddMovieButton = document.querySelector('header button');
 const confirmAddMovieButton = addMovieModal.querySelector('.btn--success');
 const cancelAddMovieButton = addMovieModal.querySelector('.btn--passive');
 
 const backdrop = document.getElementById('backdrop');
-
 const userInputs = addMovieModal.querySelectorAll('input');
-
 const movieListInformation = document.getElementById('movie-list');
-
 const entryTextSection = document.getElementById('entry-text');
 
 let movies = [];
+
+////////////////////////////
 
 const showDelMovieModal = () => {
     delMovieModal.classList.add('visible');
@@ -62,17 +60,22 @@ const renderNewMovieELement = (newElement) => {
         <p> The rating is ${rating}/5</p>
     </div>`;
 
-    newMovieElement.addEventListener('click', () => {
-        deleteElement(id);
-
-        
-        // showDelMovieModal();
-        // confirmDelMovieModal.addEventListener('click', () => {
-        //     hideDelMovieModal();
-        // });
-    });
-
     movieListInformation.append(newMovieElement);
+
+    newMovieElement.addEventListener('click', () => {
+        showDelMovieModal();
+
+        // Hago un clone del boton para no ejecutar por error antiguos listening
+        let confirmDelMovieModal = delMovieModal.querySelector('.btn--danger');
+        confirmDelMovieModal.replaceWith(confirmDelMovieModal.cloneNode(true));
+
+        // almacenos nuevamente el objeto creado y le creo un listener para este momento en particular
+        confirmDelMovieModal = delMovieModal.querySelector('.btn--danger');
+        confirmDelMovieModal.addEventListener('click', () => {
+            hideDelMovieModal();
+            deleteElement(id);
+        });
+    });
 };
 
 const toggleMovieInfo = () => {
@@ -116,6 +119,12 @@ const addMovieToDb = () => {
         return true;
     }
 };
+
+///////////////////////////////////////////////////////////
+
+cancelDelMovieModal.addEventListener('click', () => {
+    hideDelMovieModal();
+});
 
 AddMovieButton.addEventListener('click', () => {
     cleanFomr4InsertInfo();
