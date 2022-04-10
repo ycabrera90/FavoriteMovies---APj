@@ -1,14 +1,31 @@
 'use strict';
+// buttons
 const addMovieModal = document.getElementById('add-modal');
-const startAddMovieButton = document.querySelector('header button');
-const backdrop = document.getElementById('backdrop');
-const cancelAddMovieButton = addMovieModal.querySelector('.btn--passive');
+const delMovieModal = document.getElementById('delete-modal');
+const cancelDelMovieModal = delMovieModal.querySelector('.btn--passive');
+const confirmDelMovieModal = delMovieModal.querySelector('.btn--danger');
+
+const AddMovieButton = document.querySelector('header button');
 const confirmAddMovieButton = addMovieModal.querySelector('.btn--success');
+const cancelAddMovieButton = addMovieModal.querySelector('.btn--passive');
+
+const backdrop = document.getElementById('backdrop');
+
 const userInputs = addMovieModal.querySelectorAll('input');
-const entryTextSection = document.getElementById('entry-text');
+
 const movieListInformation = document.getElementById('movie-list');
 
+const entryTextSection = document.getElementById('entry-text');
+
 let movies = [];
+
+const showDelMovieModal = () => {
+    delMovieModal.classList.add('visible');
+};
+
+const hideDelMovieModal = () => {
+    delMovieModal.classList.remove('visible');
+};
 
 const deleteElement = (id) => {
     let indexMovie = 0;
@@ -23,9 +40,9 @@ const deleteElement = (id) => {
 };
 
 const cleanFomr4InsertInfo = () => {
-    userInputs[0].value = '';
-    userInputs[1].value = '';
-    userInputs[2].value = '';
+    for (const inputs of userInputs) {
+        inputs.value = '';
+    }
 };
 
 const renderNewMovieELement = (newElement) => {
@@ -44,7 +61,17 @@ const renderNewMovieELement = (newElement) => {
         <h2>${title}</h2>
         <p> The rating is ${rating}/5</p>
     </div>`;
-    newMovieElement.addEventListener('click', deleteElement.bind(null, id));
+
+    newMovieElement.addEventListener('click', () => {
+        deleteElement(id);
+
+        
+        // showDelMovieModal();
+        // confirmDelMovieModal.addEventListener('click', () => {
+        //     hideDelMovieModal();
+        // });
+    });
+
     movieListInformation.append(newMovieElement);
 };
 
@@ -56,16 +83,15 @@ const toggleMovieInfo = () => {
     }
 };
 
-const toggleFomr4InsertInfo = () => {
-    addMovieModal.classList.toggle('visible');
-    backdrop.classList.toggle('visible');
+const showFomr4InsertInfo = () => {
+    backdrop.classList.add('visible');
+    addMovieModal.classList.add('visible');
 };
 
-// const clearMovieInputs = () => {
-//     for (inputs of userInputs) {
-//         inputs.value = '';
-//     }
-// };
+const hideFomr4InsertInfo = () => {
+    backdrop.classList.remove('visible');
+    addMovieModal.classList.remove('visible');
+};
 
 const addMovieToDb = () => {
     const titleValue = userInputs[0].value;
@@ -91,23 +117,23 @@ const addMovieToDb = () => {
     }
 };
 
-startAddMovieButton.addEventListener('click', () => {
+AddMovieButton.addEventListener('click', () => {
     cleanFomr4InsertInfo();
-    toggleFomr4InsertInfo();
+    showFomr4InsertInfo();
 });
 
 backdrop.addEventListener('click', () => {
-    toggleFomr4InsertInfo();
+    hideFomr4InsertInfo();
 });
 
 cancelAddMovieButton.addEventListener('click', () => {
-    toggleFomr4InsertInfo();
+    hideFomr4InsertInfo();
 });
 
 confirmAddMovieButton.addEventListener('click', () => {
     if (addMovieToDb()) {
         toggleMovieInfo();
-        toggleFomr4InsertInfo();
+        hideFomr4InsertInfo();
         renderNewMovieELement(movies[movies.length - 1]); // arg -> nuevo elemento creado
     }
 });
