@@ -1,8 +1,8 @@
-# SHARE A PLACE
+# FAVORITE MOVIES
 
 ## DESCRIPTION
 
-It is a small web application for academic use that shows work with Google APIs.
+It is a small web application for academic use that shows work with DOM Elements.
 
 ## Serve App
 
